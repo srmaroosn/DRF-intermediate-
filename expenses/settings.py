@@ -73,7 +73,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'expenses.wsgi.application'
-
+REST_FRAMEWORK = {
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+    
+}
+AUTH_USER_MODEL ='users.User'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

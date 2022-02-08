@@ -28,7 +28,7 @@ class User( AbstractBaseUser , PermissionsMixin ):
     is_active =models.BooleanField(default=True)
     is_satff = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at= models.DateTimeField()
+    updated_at= models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -38,4 +38,5 @@ class User( AbstractBaseUser , PermissionsMixin ):
     def __strt__(self):
         return self.email
 
-    def 
+    def tokens(self):
+        return ''

@@ -4,15 +4,16 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length= 220, min_length= 8 ,write_only=True)
     class Meta:
         model= User
-        fields= ['email' ,'username']
+        fields= ['email' ,'username','password']
     def validate(self, attrs):
         email= attrs.get('email', '')
         username =attrs.get('username','')
 
-        if username.alnum():
+        if username.isalnum():
             raise serializers.ValidationError('username must be alphanumeric')
         return attrs
 
-        def create(self.validate_date):
+    def create(self,validated_date):
+            return User.objects.create_user(**validated_date)
             
 
