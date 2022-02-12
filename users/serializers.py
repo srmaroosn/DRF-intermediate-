@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import User
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length= 220, min_length= 8 ,write_only=True)
@@ -16,4 +17,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self,validated_date):
             return User.objects.create_user(**validated_date)
             
-
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    token =serializers.CharField(max_length= 555)
+    class Meta:
+        model= User
+        fields = ['token']
