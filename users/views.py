@@ -1,7 +1,7 @@
 from django.conf import settings
 import jwt
 from rest_framework import generics
-from users.serializers import RegisterSerializer
+from users.serializers import RegisterSerializer,LoginSerializer,RestPasswordEmailRequestSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from .utils import Util
 from rest_framework import status
 from rest_framework.views import APIView
+
 # Create your views here
 class RegsiterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -27,8 +28,9 @@ class RegsiterView(generics.GenericAPIView):
         relativeLink = reverse('email-verify')
         absurl = 'http://'+ current_site + relativeLink + "?token="+str(token)
         email_body = 'Hi' + user.username + 'Use this link to verify Email \n'+ absurl
-        data = [{'email_boday': email_body, 'to_email': user.email, 'email_subject': 'verify your email'}]
+        data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'verify your email'}
         Util.send_email(data)
+
         return Response(user_data , status=status.HTTP_201_CREATED)
 
 class VerifyEmail(APIView):
@@ -45,3 +47,19 @@ class VerifyEmail(APIView):
             return Response({'error': 'Activation Link Experied'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.DecodeError as e:
             return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginAPIView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        serializer= self.serializer_class(data= request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status= status.HTTP_200_OK)
+
+class RequestPasswordResetEmail(generics.GenericAPIView):
+    serializer_class= RestPasswordEmailRequestSerializer
+    def post(self, request):
+        data = {'request':request , 'data':request.data}
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'sucess :''We have send a link to reset your password'})

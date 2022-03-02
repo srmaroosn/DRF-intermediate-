@@ -45,13 +45,20 @@ INSTALLED_APPS = [
     #user defined app
     'users',
     'car',
+    'actualexpense',
+     'realincome',
     #third party app.
     'rest_framework',
     'drf_yasg2',
     'rest_framework_swagger',
+   
 
 
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,6 +96,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
     
+}
+REST_FRAMEWORK ={
+    'NON_FIELD_ERRORS_KEY':'error'
 }
 AUTH_USER_MODEL ='users.User'
 
@@ -143,3 +153,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#mail server
+EMAIL_BACKEND= 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
+EMAIL_HOST_USER="vr302916@gmail.com"
+EMAIL_HOST_PASSWORD='valentino46@#'

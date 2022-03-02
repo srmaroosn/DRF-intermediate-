@@ -13,16 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.db import router
 from django.urls import path
 from django.urls import include
 from car.views import CarPlanViewset, CarSpecificationViewset
-from users.views import RegsiterView, VerifyEmail 
+from users.views import LoginAPIView, RegsiterView, VerifyEmail ,RequestPasswordResetEmail
 from rest_framework import permissions
 from drf_yasg2.views import get_schema_view
 from drf_yasg2 import openapi
 from rest_framework.routers import DefaultRouter
+from actualexpense.views import ExpenseDetailsAPIView,ExpensesAPIView
+from realincome.views import IncomeListAPIView,IncomeDetailsAPIView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -49,5 +52,12 @@ urlpatterns = [
     path('car/', include(router.urls)),
     path('register/', RegsiterView.as_view(), name='register'),
     path('email-verify/', VerifyEmail.as_view(), name='email-verify'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui')
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
+    path('login/',LoginAPIView.as_view(), name='login'),
+    path('expense/,' ,ExpensesAPIView.as_view(), name='expense'),
+    path('expense/<int:id>/', ExpenseDetailsAPIView.as_view(), name='expense-details' ),
+    path('income/' ,IncomeListAPIView.as_view(), name='income'),
+    path('income/<int:id>/', IncomeDetailsAPIView.as_view(), name='income-details' ),
+    path('request_reset_email/',RequestPasswordResetEmail.as_view(), name='request_reset_email')
+
 ]
